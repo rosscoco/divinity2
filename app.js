@@ -1,26 +1,22 @@
-import DAO from './dao';
+import fs from 'fs';
+import AppDAO from './dao';
+import ItemRepository from './model/item_repository';
 
-const db = new DAO('./db.sqlite');
+const path = require('path');
 
-const createItemStats = `CREATE TABLE IF NOT EXISTS ItemStats (
-    id VARCHAR(255) PRIMARY KEY NOT NULL, 
-    name VARCHAR(255) NOT NULL, 
-    displayName VARCHAR(255) NOT NULL, 
-    parent VARCHAR(255) NULL, 
-    rootTemplate VARCHAR(255) NULL, 
-    value INTEGER NULL, 
-    weight INTEGER NULL, 
-    comboCategory VARCHAR(255) NULL,
-    isConsumable VARCHAR(255) NULL,
-    itemGroup VARCHAR(255) NULL,
-    previewIcon VARCHAR(255) NULL,
-    previewTooltip VARCHAR(255));`;
+const db = new AppDAO('./db.sqlite');
+
+const itemRepo = new ItemRepository(db);
 
 
-db.run(createItemStats)
-	.then((result) => {
-		console.log(result);
-	});
-// .error((err) => {
-// 	console.log(err);
-// });
+function createItems() {
+	const allItems = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'ItemStatsMerged.json')), 'utf-8');
+	itemRepo.createTable()
+		.then(() => {
+			allItems.forEach((item) => {
+				itemRepo.create(item);
+			});
+		});
+}
+
+createItems();

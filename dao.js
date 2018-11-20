@@ -1,4 +1,4 @@
-//https://stackabuse.com/a-sqlite-tutorial-with-node-js/
+// https://stackabuse.com/a-sqlite-tutorial-with-node-js/
 import sqlite from 'sqlite3';
 
 class AppDAO {
@@ -25,6 +25,7 @@ class AppDAO {
 			});
 		});
 	}
+
 
 	get(sql, params = []) {
 		return new Promise((resolve, reject) => {
@@ -53,5 +54,6 @@ class AppDAO {
 			});
 		});
 	}
+}
 
 export default AppDAO;

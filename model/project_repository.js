@@ -11,6 +11,20 @@ class ProjectRepository {
 		);
 	}
 
+	getAll(id) {
+		return this.dao.all(
+			'SELECT * FROM projects',
+			[id]
+		);
+	}
+
+	getTasks(projectId) {
+		return this.dao.all(
+			'SELECT * FROM tasks WHERE projectId = ?',
+			[projectId]
+		);
+	}
+
 	create(name) {
 		return this.dao.run(`
 			INSERT INTO projects (name) VALUES (?)`,
