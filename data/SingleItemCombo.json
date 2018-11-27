@@ -1,0 +1,16 @@
+[
+    {
+        "ingredients": [
+            "Bone",
+            "LAB_MortarPestle_A"
+        ],
+        "results": [
+            "TOOL_Pouch_Dust_Bone_A"
+        ],
+        "ingredientTypes": [
+            "Category",
+            "Obect"
+        ],
+        "stats": "TOOL_Pouch_Dust_Bone_A",
+        "name": "TOOL_Pouch_Dust_Bone_A"
+    }]

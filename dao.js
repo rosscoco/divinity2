@@ -16,8 +16,8 @@ class AppDAO {
 		return new Promise((res, rej) => {
 			this.db.run(sql, params, function (err) {
 				if (err) {
-					console.log(`Error Running SQL ${sql}`);
-					console.log(err);
+					// console.log(`Error Running SQL ${s}`);
+					// console.log(err);
 					rej(err);
 				} else {
 					res({ id: this.lastID });
@@ -31,8 +31,8 @@ class AppDAO {
 		return new Promise((resolve, reject) => {
 			this.db.get(sql, params, (err, result) => {
 				if (err) {
-					console.log(`Error running sql: ${sql}`);
-					console.log(err);
+					// console.log(`Error running sql: ${sql}`);
+					// console.log(err);
 					reject(err);
 				} else {
 					resolve(result);
@@ -45,14 +45,21 @@ class AppDAO {
 		return new Promise((resolve, reject) => {
 			this.db.all(sql, params, (err, result) => {
 				if (err) {
-					console.log(`Error running sql: ${sql}`);
-					console.log(err);
+					// console.log(`Error running sql: ${sql}`);
+					// console.log(err);
 					reject(err);
 				} else {
 					resolve(result);
 				}
 			});
 		});
+	}
+
+	transaction(commands) {
+		this.db.run('BEGIN;');
+		const processedCmd = commands.map(cmd => this.run(cmd.sql, cmd.values));
+		this.db.run('COMMIT;');
+		return Promise.all(processedCmd);
 	}
 }
 

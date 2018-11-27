@@ -10,7 +10,9 @@
     "parser": "node src/data/parser/index.js"
   },
   "dependencies": {
-    "sqlite3": "^4.0.4"
+    "morgan": "^1.9.1",
+    "sqlite3": "^4.0.4",
+    "winston": "^3.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
