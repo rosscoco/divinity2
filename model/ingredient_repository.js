@@ -16,7 +16,7 @@ class IngredientRepository {
 	}
 
 	deleteTable() {
-		const sql = 'DROP TABLE ingredients;';
+		const sql = 'DROP TABLE IF EXISTS ingredients;';
 		return this.dao.run(sql);
 	}
 

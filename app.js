@@ -4,7 +4,7 @@ import ItemRepository from './model/item_repository';
 import RecipeRepository from './model/recipe_repository';
 import IngredientRepository from './model/ingredient_repository';
 import ResultRepository from './model/results_repository';
-import Logger from './logs/logger.js';
+import Logger from './logs/logger';
 
 const path = require('path');
 
@@ -70,17 +70,18 @@ function createRecipeResults(recipeId, recipeData) {
 function createRecipes() {
 	const allRecipes = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'ItemCombos.json')), 'utf-8');
 	// const allRecipes = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'SingleItemCombo.json')), 'utf-8');
-	const commands = allRecipes.map((recipe) => {
-		const recipeData = recipe;
-		return recipeRepo.create(recipe)
-			.catch((err) => {
-				logger.error(`Could not create recipe ${recipeData.name}. ${err}`);
-			})
-			.then(results => Promise.all([createIngredients(results.id, recipeData),
-				createRecipeResults(results.id, recipeData)]));
-	});
 
-	return Promise.all(commands);
+	db.run('BEGIN TRANSACTION;')
+		.then(() => Promise.all(allRecipes.map((recipe) => {
+			const recipeData = recipe;
+			return recipeRepo.create(recipe)
+				.catch((err) => {
+					logger.error(`Could not create recipe ${recipeData.name}. ${err}`);
+				})
+				.then(results => Promise.all([createIngredients(results.id, recipeData),
+					createRecipeResults(results.id, recipeData)]));
+		})))
+		.then(() => db.run('COMMIT;'));
 }
 
 createTables()

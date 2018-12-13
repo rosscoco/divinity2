@@ -56,7 +56,7 @@ class AppDAO {
 	}
 
 	transaction(commands) {
-		this.db.run('BEGIN;');
+		this.db.run('BEGIN TRANSACTION;');
 		const processedCmd = commands.map(cmd => this.run(cmd.sql, cmd.values));
 		this.db.run('COMMIT;');
 		return Promise.all(processedCmd);

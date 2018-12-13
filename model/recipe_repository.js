@@ -13,7 +13,7 @@ class RecipeRepository {
 	}
 
 	deleteTable() {
-		const sql = 'DROP TABLE recipes;';
+		const sql = 'DROP TABLE IF EXISTS recipes;';
 		return this.dao.run(sql);
 	}
 

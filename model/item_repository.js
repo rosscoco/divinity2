@@ -23,7 +23,7 @@ class TaskRepository {
 	}
 
 	deleteTable() {
-		const sql = 'DROP TABLE items;';
+		const sql = 'DROP TABLE IF EXISTS items;';
 		return this.dao.run(sql);
 	}
 
